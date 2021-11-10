@@ -26,16 +26,36 @@ async function run() {
     const database = client.db("hobbyLobbyDatabase");
     const productCollection = database.collection("products");
     const reviewCollection = database.collection("reviews");
+    const userCollection = database.collection("users");
 
+    // GET all products
     app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
       const result = await cursor.toArray();
       res.json(result);
     });
 
+    // GET product by id
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productCollection.findOne(query);
+      console.log("Finding the product", result);
+      res.json(result);
+    });
+
+    // GET all reviews
     app.get("/reviews", async (req, res) => {
       const cursor = reviewCollection.find({});
       const result = await cursor.toArray();
+      res.json(result);
+    });
+
+    // POST user
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      console.log(result);
       res.json(result);
     });
   } finally {
