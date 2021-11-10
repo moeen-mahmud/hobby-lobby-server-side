@@ -25,9 +25,16 @@ async function run() {
     // Database collection
     const database = client.db("hobbyLobbyDatabase");
     const productCollection = database.collection("products");
+    const reviewCollection = database.collection("reviews");
 
     app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
+      const result = await cursor.toArray();
+      res.json(result);
+    });
+
+    app.get("/reviews", async (req, res) => {
+      const cursor = reviewCollection.find({});
       const result = await cursor.toArray();
       res.json(result);
     });
