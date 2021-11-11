@@ -78,6 +78,18 @@ async function run() {
       res.json(result);
     });
 
+    // GET user by checking email
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await userCollection.findOne(query);
+      let isAdmin = false;
+      if (user?.role === "admin") {
+        isAdmin = true;
+      }
+      res.json({ admin: isAdmin });
+    });
+
     // POST an order
     app.post("/orders", async (req, res) => {
       const order = req.body;
