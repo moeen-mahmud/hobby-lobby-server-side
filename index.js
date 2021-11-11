@@ -67,6 +67,16 @@ async function run() {
       console.log("Inserting order with", result);
       res.json(result);
     });
+
+    // GET orders by email
+    app.get("/orders", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const cursor = orderCollection.find(query);
+      const result = await cursor.toArray();
+      console.log("Finding the orders", result);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }
