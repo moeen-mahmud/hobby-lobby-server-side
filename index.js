@@ -52,11 +52,29 @@ async function run() {
       res.json(result);
     });
 
+    // POST a review
+    app.post("/reviews", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      console.log("Inserting review", result);
+      res.json(result);
+    });
+
     // POST user
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await userCollection.insertOne(user);
       console.log(result);
+      res.json(result);
+    });
+
+    // PUT an user to admin
+    app.put("/users", async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const updateDoc = { $set: { role: "admin" } };
+      const result = await userCollection.updateOne(filter, updateDoc);
+      console.log("Giving a role", result);
       res.json(result);
     });
 
@@ -75,6 +93,15 @@ async function run() {
       const cursor = orderCollection.find(query);
       const result = await cursor.toArray();
       console.log("Finding the orders", result);
+      res.json(result);
+    });
+
+    // DELTE orders by id
+    app.delete("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await orderCollection.deleteOne(query);
+      console.log("deleting a order", result);
       res.json(result);
     });
   } finally {
