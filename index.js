@@ -36,6 +36,13 @@ async function run() {
       res.json(result);
     });
 
+    // POST a product
+    app.post("/products", async (req, res) => {
+      const product = req.body;
+      const result = await productCollection.insertOne(product);
+      res.json(result);
+    });
+
     // GET product by id
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
