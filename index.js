@@ -48,7 +48,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await productCollection.findOne(query);
-      console.log("Finding the product", result);
       res.json(result);
     });
 
@@ -57,7 +56,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await productCollection.deleteOne(query);
-      console.log("deleting product", result);
       res.json(result);
     });
 
@@ -72,7 +70,6 @@ async function run() {
     app.post("/reviews", async (req, res) => {
       const review = req.body;
       const result = await reviewCollection.insertOne(review);
-      console.log("Inserting review", result);
       res.json(result);
     });
 
@@ -80,7 +77,6 @@ async function run() {
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await userCollection.insertOne(user);
-      console.log(result);
       res.json(result);
     });
 
@@ -90,7 +86,6 @@ async function run() {
       const filter = { email: user.email };
       const updateDoc = { $set: { role: "admin" } };
       const result = await userCollection.updateOne(filter, updateDoc);
-      console.log("Giving a role", result);
       res.json(result);
     });
 
@@ -110,7 +105,6 @@ async function run() {
     app.post("/orders", async (req, res) => {
       const order = req.body;
       const result = await orderCollection.insertOne(order);
-      console.log("Inserting order with", result);
       res.json(result);
     });
 
@@ -127,7 +121,6 @@ async function run() {
         const result = await cursor.toArray();
         res.json(result);
       }
-      console.log("Finding the orders", result);
     });
 
     // PUT or updating the order status
@@ -142,7 +135,6 @@ async function run() {
         updateDoc,
         options
       );
-      console.log("Updating status", result);
       res.json(result);
     });
 
@@ -151,7 +143,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await orderCollection.deleteOne(query);
-      console.log("deleting a order", result);
       res.json(result);
     });
   } finally {
@@ -160,6 +151,7 @@ async function run() {
 }
 
 run().catch(console.dir);
+
 // Testing server endpoint
 app.get("/", (req, res) => {
   res.send("Niche product website server is running");
