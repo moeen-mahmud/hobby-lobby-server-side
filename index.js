@@ -118,8 +118,23 @@ async function run() {
         const result = await cursor.toArray();
         res.json(result);
       }
-
       console.log("Finding the orders", result);
+    });
+
+    // PUT or updating the order status
+    app.put("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateStatus = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = { $set: { status: updateStatus.status } };
+      const result = await orderCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      console.log("Updating status", result);
+      res.json(result);
     });
 
     // DELTE orders by id
