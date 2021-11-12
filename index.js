@@ -108,11 +108,18 @@ async function run() {
     // GET orders by email
     app.get("/orders", async (req, res) => {
       const email = req.query.email;
-      const query = { email: email };
-      const cursor = orderCollection.find(query);
-      const result = await cursor.toArray();
+      if (email) {
+        const query = { email: email };
+        const cursor = orderCollection.find(query);
+        const result = await cursor.toArray();
+        res.json(result);
+      } else {
+        const cursor = orderCollection.find({});
+        const result = await cursor.toArray();
+        res.json(result);
+      }
+
       console.log("Finding the orders", result);
-      res.json(result);
     });
 
     // DELTE orders by id
